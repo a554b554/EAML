@@ -1,0 +1,134 @@
+---
+target: README.md
+description: README for an open-source distributed task queue library.
+sigil: "@"
+delimiter: "<>"
+---
+# Taskflow
+
+<ph One-line project tagline — lightweight, fast, developer-friendly distributed task queue.>
+
+<context tech_stack>
+- Language: Rust (core) + Python bindings (PyO3)
+- Message broker: Redis or NATS
+- Serialization: MessagePack
+- Minimum supported Rust version: 1.75
+- Python version: 3.10+
+</context tech_stack>
+
+<context architecture>
+Taskflow follows a worker-pool architecture:
+- Producers submit tasks to a broker (Redis or NATS)
+- Workers pull tasks from queues, execute handlers, and report results
+- A scheduler component handles delayed and periodic (cron) tasks
+- Results are stored in Redis with configurable TTL
+- Workers support graceful shutdown, retry with exponential backoff, and dead-letter queues
+</context architecture>
+
+## Features
+
+@- Distributed task execution with automatic load balancing
+- Redis and NATS broker support
+- Task priorities, deadlines, and rate limiting
+- Cron-style periodic tasks
+- Automatic retries with exponential backoff
+- Dead-letter queues for failed tasks
+- Real-time task monitoring dashboard@<param context:tech_stack;architecture><prompt Review and expand this feature list. Add 3-4 more features that a production-grade task queue should have (think: observability, security, developer experience). Format as a markdown bullet list with brief descriptions for each feature.>
+
+## Installation
+
+### Rust
+
+\`\`\`toml
+[dependencies]
+taskflow = "0.8"
+\`\`\`
+
+### Python
+
+\`\`\`bash
+pip install taskflow-py
+\`\`\`
+
+The Python package requires <ph minimum Python version> and ships pre-built
+wheels for Linux (x86\_64, aarch64), macOS (universal2), and Windows (x86\_64).
+
+## Quick Start
+
+### Rust
+
+\`\`\`rust
+use taskflow::prelude::*;
+
+\#[tokio::main]
+async fn main() -\> Result\<()\> {
+    let broker = RedisBroker::connect("redis://localhost:6379").await?;
+    let mut worker = Worker::new(broker);
+
+    worker.register("send_email", |task: Task| async move {
+        let email: Email = task.deserialize()?;
+        send_email(&email).await?;
+        Ok(())
+    });
+
+    worker.start().await
+}
+\`\`\`
+
+### Python
+
+\`\`\`python
+from taskflow import Broker, Worker
+
+broker = Broker("redis://localhost:6379")
+worker = Worker(broker)
+
+\@worker.task(name="send_email", retries=3)
+async def send_email(to: str, subject: str, body: str):
+    # your email logic here
+    pass
+
+if __name__ == "__main__":
+    worker.run()
+\`\`\`
+
+## Configuration
+
+@Taskflow uses a TOML configuration file for worker settings:@<param context:tech_stack;architecture><prompt Write a comprehensive configuration reference section. Cover: broker connection, worker concurrency, retry policy, logging, rate limiting, and TLS settings. Show a complete example TOML config with comments explaining each option. Format for a README audience — clear and copy-pasteable.>
+
+## Architecture
+
+@Taskflow follows a standard producer-worker pattern with pluggable broker
+backends.@<param context:architecture output:replace><prompt Write an Architecture section suitable for a README. Explain the high-level data flow: producer → broker → worker → result store. Describe how task routing, priorities, and dead-letter queues work. Keep it concise (3-4 paragraphs) with a focus on helping new contributors understand the codebase.>
+
+## Benchmarks
+
+Taskflow achieves <<10,000 tasks/second>> throughput on a single worker node
+with Redis broker (8-core AMD EPYC, 32GB RAM). <verify source:web>
+
+Compared to Celery (Python), Taskflow provides approximately 15x higher
+throughput for CPU-bound tasks due to Rust's zero-cost abstractions and
+tokio's async runtime. <verify>
+
+@| Metric | Taskflow | Celery | Sidekiq |
+|--------|----------|--------|---------|
+| Throughput (tasks/sec) | 10,000 | 650 | 4,200 |
+| P99 latency (ms) | 2.3 | 45 | 8.1 |
+| Memory per worker (MB) | 12 | 180 | 85 |@<plan Review these benchmark claims for plausibility. Suggest what methodology section should accompany these numbers to make them credible. Consider what caveats or conditions should be noted.>
+
+## API Reference
+
+Full API documentation is available at:
+
+- **Rust**: <ph link to docs.rs page>
+- **Python**: <ph link to readthedocs page>
+
+## Contributing
+
+@We welcome contributions! Please read our contributing guide before submitting
+pull requests.@<param context:tech_stack output:replace><prompt Expand this into a proper Contributing section. Include: how to set up the development environment, running tests, code style expectations, PR process, and where to find good-first-issues. Reference the Rust and Python components.>
+
+## License
+
+Taskflow is dual-licensed under MIT and Apache 2.0. See [LICENSE-MIT](LICENSE-MIT)
+and [LICENSE-APACHE](LICENSE-APACHE) for details.

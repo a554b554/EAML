@@ -1,0 +1,239 @@
+---
+target: course_syllabus.tex
+description: Graduate course syllabus for machine learning, with AI-assisted refinement.
+sigil: "@"
+delimiter: "<>"
+---
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem,hyperref}
+
+\title{CS 6140: Advanced Machine Learning \\ Fall 2026 Syllabus}
+\author{Prof. Sarah Kim \\ Department of Computer Science}
+\date{}
+
+\begin{document}
+\maketitle
+
+<context prerequisites>
+Students should have completed:
+- CS 5140 (Introduction to Machine Learning) or equivalent
+- MATH 3100 (Linear Algebra)
+- STAT 3200 (Probability and Statistics)
+- Proficiency in Python and NumPy/PyTorch
+</context prerequisites>
+
+<context learning_goals>
+By the end of this course, students will be able to:
+1. Derive and implement core ML algorithms from scratch.
+2. Critically evaluate ML papers and reproduce key results.
+3. Design experiments with proper baselines, ablations, and statistical tests.
+4. Apply ML methods to real-world datasets with appropriate ethical considerations.
+</context learning_goals>
+
+\section{Course Description}
+
+@This course covers advanced topics in machine learning, including deep learning
+theory, generative models, reinforcement learning, and fairness in ML. The
+course emphasizes both theoretical foundations and practical implementation.@<param context:learning_goals;prerequisites><prompt Rewrite this course description to be more engaging and specific. Mention 2-3 concrete applications students will work on. Mention that this is a research-oriented course where students read and present recent papers. 2 paragraphs.><output This course offers an in-depth exploration of the frontiers of machine learning, spanning deep learning theory, generative models, reinforcement learning, and fairness-aware ML. Rather than surveying these topics at a surface level, students will engage with them through hands-on projects grounded in real-world applications---such as training generative adversarial networks for realistic image synthesis, building a reinforcement learning agent that learns to navigate complex environments, and auditing a classification system for demographic bias. By the end of the semester, you will be able to derive and implement core algorithms from scratch, design rigorous experiments with proper baselines and ablations, and apply ML methods to challenging datasets with appropriate ethical considerations.
+
+This is a \textbf{research-oriented} course: each week, students will read, critically analyze, and present recent papers from top venues such as NeurIPS, ICML, and ICLR. Through structured paper discussions and a semester-long research project, you will develop the skills needed to reproduce key results from the literature, evaluate methodological claims, and ultimately contribute original work to the field. Students are expected to have a solid foundation in machine learning (CS~5140 or equivalent), linear algebra, probability and statistics, and proficiency in Python with NumPy/PyTorch.><hash 6c1342731b0e4fbc>
+
+\section{Prerequisites}
+
+Students must have completed introductory machine learning and linear algebra.
+Programming experience in Python with PyTorch is required. <verify><output ISSUES FOUND: (1) Missing STAT 3200 (Probability and Statistics) prerequisite. (2) Missing NumPy — context requires "Python and NumPy/PyTorch" but prose only says "Python with PyTorch." (3) Missing specific course numbers (CS 5140, MATH 3100, STAT 3200). Suggested fix: "Students must have completed CS 5140 (Introduction to Machine Learning) or equivalent, MATH 3100 (Linear Algebra), and STAT 3200 (Probability and Statistics). Programming proficiency in Python with NumPy and PyTorch is required."><hash bd670c9ab8d56426>
+
+\section{Textbooks}
+
+\begin{itemize}
+\item \textbf{Required:} <<\textit{Deep Learning}>> by Goodfellow, Bengio, and Courville (2016) <cite source:gscholar style:bibtex><output \@book{Goodfellow-et-al-2016, title={Deep Learning}, author={Ian Goodfellow and Yoshua Bengio and Aaron Courville}, publisher={MIT Press}, note={\url{http://www.deeplearningbook.org}}, year={2016}><hash 13916ee007a80d3f>
+\item \textbf{Supplementary:} <<\textit{Probabilistic Machine Learning: Advanced Topics}>> by Kevin Murphy (2023) <cite source:web style:bibtex><output \@book{murphy2023probabilistic, title={Probabilistic Machine Learning: Advanced Topics}, author={Murphy, Kevin P.}, year={2023}, publisher={MIT Press}, address={Cambridge, MA}, series={Adaptive Computation and Machine Learning}, isbn={978-0-262-04843-9}, url={https://probml.github.io/book2}}><hash ba841f1ee36882e4>
+\end{itemize}
+
+\section{Grading}
+
+\begin{tabular}{ll}
+Homework assignments (4) & 30\% \\
+Paper presentations (2) & 15\% \\
+Midterm exam & 20\% \\
+Final project & 30\% \\
+Participation & 5\% \\
+\end{tabular}
+
+@The grading breakdown above follows a standard structure but may not
+optimally support the learning goals.@<param context:learning_goals><plan Review this grading scheme against the learning goals. Suggest modifications that better incentivize paper reading, reproducibility, and ethical reasoning. Consider whether a midterm exam is the best assessment for a research-oriented graduate course.><output REVISION PLAN: GRADING SCHEME REALIGNMENT
+
+PROBLEM: The midterm exam (20%) tests recall under time pressure, conflicting with research-oriented goals. Paper evaluation (Goal 2), reproducibility (Goal 3), and ethical reasoning (Goal 4) are underweighted. No component explicitly rewards ethical analysis.
+
+RECOMMENDED CHANGES:
+- Homework assignments: 30% to 25%
+- Paper presentations: 15% (unchanged)
+- Midterm exam: 20% to 0% (ELIMINATE)
+- NEW Reproducibility study: +10%
+- NEW Paper reviews/reading responses: +10%
+- NEW Ethics case study: +5%
+- Final project: 30% (unchanged)
+- Participation: 5% (unchanged)
+
+DETAILS:
+1. REPLACE MIDTERM with reproducibility study (10%) and paper reviews (10%). Students select a published result from Weeks 1-6, reproduce it, and write a 3-4 page report documenting methodology, discrepancies, and experimental rigor reflection. Directly exercises Goals 2 and 3.
+2. ADD paper review component (10%): 6 written conference-style reviews (1-2 pages each) with summary, strengths, weaknesses, questions. Two designated as "lead reviews" with discussion questions. Builds Goal 2.
+3. ADD ethics case study (5%): Students audit a trained model/dataset for fairness issues, write findings, propose mitigations. Tied to Week 12 FAT-ML module. Addresses Goal 4.
+4. REDUCE homework from 30% to 25% to accommodate ethics component.
+5. RETAIN presentations (15%) and participation (5%).
+
+IMPLEMENTATION: Remove Week 7 midterm from schedule, add reproducibility study deadline. Add paper review template and ethics case study to materials. Add explicit ethical considerations criterion to final project rubric.><hash 059c2adfc36f623f>
+
+\section{Course Schedule}
+
+@\begin{description}
+\item[Week 1--2] \textbf{Review of ML Fundamentals.} \\
+  \emph{Topics:} Loss functions (cross-entropy, hinge, squared error), $L_1$/$L_2$ regularization, bias-variance tradeoff, gradient descent variants (SGD, Adam, AdaGrad), convergence guarantees, hyperparameter tuning. \\
+  \emph{Required Reading:} Bottou, ``Optimization Methods for Large-Scale Machine Learning'' (SIAM Review, 2018); Shalev-Shwartz and Ben-David, \emph{Understanding Machine Learning: From Theory to Algorithms}, Chapters 2--5. \\
+  \emph{Assignment:} Problem Set 1 due end of Week 2 --- implement SGD with momentum and Adam from scratch; compare convergence on convex and non-convex objectives.
+
+\item[Week 3--4] \textbf{Deep Learning Theory.} \\
+  \emph{Topics:} Universal approximation theorems, depth vs.\ width tradeoffs, Rademacher complexity and generalization bounds for neural networks, double descent, implicit bias of gradient descent, neural tangent kernels, lottery ticket hypothesis. \\
+  \emph{Required Reading:} Zhang et al., ``Understanding Deep Learning Requires Rethinking Generalization'' (ICLR 2017); Arora et al., ``Fine-Grained Analysis of Optimization and Generalization for Overparameterized Two-Layer Neural Networks'' (ICML 2019); Frankle and Carlin, ``The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks'' (ICLR 2019). \\
+  \emph{Assignment:} Problem Set 2 due end of Week 4 --- reproduce the memorization experiments from Zhang et al.; analyze generalization gap under varying model capacity and regularization.
+
+\item[Week 5--6] \textbf{Generative Models.} \\
+  \emph{Topics:} Variational autoencoders (ELBO derivation, reparameterization trick, posterior collapse), generative adversarial networks (original formulation, Wasserstein GAN, training stability, mode collapse), score-based and diffusion models (denoising score matching, DDPM forward/reverse process, classifier-free guidance). \\
+  \emph{Required Reading:} Kingma and Welling, ``Auto-Encoding Variational Bayes'' (ICLR 2014); Goodfellow et al., ``Generative Adversarial Nets'' (NeurIPS 2014); Ho et al., ``Denoising Diffusion Probabilistic Models'' (NeurIPS 2020); Song et al., ``Score-Based Generative Modeling through Stochastic Differential Equations'' (ICLR 2021). \\
+  \emph{Assignment:} Problem Set 3 due end of Week 6 --- implement a VAE and a DDPM on CIFAR-10; compare sample quality using FID scores; perform ablations on noise schedules.
+
+\item[Week 7] \textbf{Midterm Exam.} \\
+  \emph{Coverage:} All material from Weeks 1--6. Closed-book, written exam. Emphasis on derivations, theoretical understanding, and experimental design reasoning.
+
+\item[Week 8--9] \textbf{Sequence Models.} \\
+  \emph{Topics:} Attention mechanisms (scaled dot-product, multi-head), transformer architecture (encoder-decoder, decoder-only), positional encodings (sinusoidal, rotary, ALiBi), efficient attention (linear attention, flash attention), state-space models (S4, Mamba), long-range dependency benchmarks. \\
+  \emph{Required Reading:} Vaswani et al., ``Attention Is All You Need'' (NeurIPS 2017); Gu et al., ``Efficiently Modeling Long Sequences with Structured State Spaces'' (ICLR 2022); Dao et al., ``FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness'' (NeurIPS 2022); Gu and Dao, ``Mamba: Linear-Time Sequence Modeling with Selective State Spaces'' (2023). \\
+  \emph{Assignment:} Problem Set 4 due end of Week 9 --- implement a small transformer and an S4 layer from scratch; benchmark on Long Range Arena tasks; analyze attention patterns and computational scaling.
+
+\item[Week 10] \textbf{Self-Supervised Learning.} \\
+  \emph{Topics:} Contrastive learning (SimCLR, MoCo), non-contrastive methods (BYOL, Barlow Twins, VICReg), masked image modeling (MAE), masked language modeling (BERT, MLM objective), connections between self-supervised objectives, transfer learning and linear probing evaluation protocols. \\
+  \emph{Required Reading:} Chen et al., ``A Simple Framework for Contrastive Learning of Visual Representations'' (ICML 2020); Grill et al., ``Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning'' (NeurIPS 2020); He et al., ``Masked Autoencoders Are Scalable Vision Learners'' (CVPR 2022); Devlin et al., ``BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding'' (NAACL 2019). \\
+  \emph{Assignment:} Problem Set 5 due end of Week 10 --- train SimCLR and MAE on a subset of ImageNet; evaluate learned representations via linear probing and $k$-NN classification; compare to supervised baselines.
+
+\item[Week 11--12] \textbf{Reinforcement Learning.} \\
+  \emph{Topics:} Markov decision processes, policy gradient methods (REINFORCE, PPO, TRPO), actor-critic architectures, model-based RL (world models, Dreamer), offline RL, RL from human feedback (RLHF), reward modeling. \\
+  \emph{Required Reading:} Schulman et al., ``Proximal Policy Optimization Algorithms'' (2017); Hafner et al., ``Dream to Control: Learning Behaviors by Latent Imagination'' (ICLR 2020); Ouyang et al., ``Training Language Models to Follow Instructions with Human Feedback'' (NeurIPS 2022); Levine et al., ``Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems'' (2020). \\
+  \emph{Assignment:} Problem Set 6 due end of Week 12 --- implement REINFORCE and PPO on CartPole and LunarLander environments; compare sample efficiency; design and run ablation studies on hyperparameters with proper statistical reporting (confidence intervals over multiple seeds).
+
+\item[Week 13] \textbf{Fairness, Accountability, and Transparency in ML.} \\
+  \emph{Topics:} Sources of bias in ML pipelines, fairness definitions and impossibility results, algorithmic auditing, model interpretability (SHAP, integrated gradients), model cards and datasheets, regulation and governance of AI systems. \\
+  \emph{Required Reading:} Mehrabi et al., ``A Survey on Bias and Fairness in Machine Learning'' (ACM Computing Surveys, 2021); Mitchell et al., ``Model Cards for Model Reporting'' (FAT* 2019); Gebru et al., ``Datasheets for Datasets'' (Communications of the ACM, 2021); Chouldechova, ``Fair Prediction with Disparate Impact: A Study of Bias in Recidivism Prediction Instruments'' (Big Data, 2017). \\
+  \emph{Assignment:} Ethics case study due end of Week 13 --- audit a pre-trained model for demographic bias on a real-world dataset; produce a model card documenting findings, limitations, and mitigation strategies.
+
+\item[Week 14--15] \textbf{Student Project Presentations.} \\
+  \emph{Format:} 20-minute oral presentations followed by 10-minute Q\&A. Projects must include a clearly defined research question, proper baselines, ablation studies, statistical significance tests, and a discussion of ethical implications. \\
+  \emph{Deliverables:} Final project report (NeurIPS format, 8 pages + references) and code repository due end of Week 15.
+\end{description}@<param output:replace context:learning_goals><prompt Expand each week with specific topics, required readings (use real paper names), and assignment due dates. Add a week on self-supervised learning between sequence models and RL. Format as a LaTeX description list.><hash ed80020bf1d564e1>
+
+\section{Policies}
+
+\subsection{Late Policy}
+
+Each student has <<3 late days>> that may be used across all homework
+assignments. After late days are exhausted, a penalty of 10\% per day applies.
+
+\subsection{Academic Integrity}
+
+Students may discuss homework at a high level but must write solutions
+independently. Use of large language models (e.g., ChatGPT, Claude) is
+permitted for code debugging but not for writing solutions or reports.
+@\textbf{Policy on AI and Large Language Model Usage.} This course recognizes that AI tools, including large language models (LLMs) such as ChatGPT, Claude, and GitHub Copilot, are increasingly integral to modern machine learning practice. Rather than prohibiting their use outright, we adopt a policy that encourages responsible engagement while preserving the pedagogical goals of the course.
+
+\medskip
+\noindent\textbf{Permitted Uses.} Students may use LLMs and AI-assisted tools for the following purposes:
+\begin{itemize}
+    \item Clarifying conceptual questions about algorithms, mathematical derivations, or theoretical frameworks covered in lecture.
+    \item Debugging code that the student has substantially written themselves.
+    \item Generating boilerplate code for data loading, visualization, or standard preprocessing pipelines.
+    \item Exploring alternative approaches or brainstorming ideas during the early stages of a project.
+    \item Improving the grammar, clarity, or structure of written reports and documentation that the student has drafted.
+\end{itemize}
+
+\noindent\textbf{Prohibited Uses.} The following uses of AI tools constitute violations of academic integrity:
+\begin{itemize}
+    \item Generating complete or near-complete solutions to homework problems, derivations, or proofs.
+    \item Using AI tools to produce core algorithmic implementations that are the focus of an assignment (e.g., implementing a neural network architecture from scratch, writing an optimization routine that the assignment is designed to teach).
+    \item Submitting AI-generated text as your own written analysis, interpretation, or critical evaluation of results.
+    \item Using AI tools during in-class examinations or quizzes unless explicitly authorized.
+    \item Using AI to circumvent the learning objectives of any assignment, as stated in its instructions.
+\end{itemize}
+
+\noindent\textbf{The Core Principle.} If the primary learning objective of a task is for you to demonstrate understanding of a concept or develop a skill, the intellectual work must be your own. When in doubt, ask the instructor or a TA before submitting.
+
+\medskip
+\noindent\textbf{Required Disclosure Format.} All submitted work must include an AI usage declaration. At the end of every assignment, include a section titled \texttt{AI Usage Declaration} containing the following:
+\begin{enumerate}
+    \item \textbf{Tool(s) Used:} Name and version of each AI tool (e.g., ChatGPT-4, Claude 3.5, GitHub Copilot).
+    \item \textbf{Purpose:} A brief description of how each tool was used (e.g., ``Used Claude to debug a dimension mismatch error in my attention mechanism implementation'').
+    \item \textbf{Extent:} An honest characterization of the scope---whether the tool provided a minor suggestion, helped restructure an approach, or generated substantive content that was then adapted.
+    \item \textbf{Modification:} A description of how you modified, verified, or built upon any AI-generated output.
+\end{enumerate}
+If no AI tools were used, include the statement: ``No AI tools were used in the preparation of this submission.''
+
+\medskip
+\noindent\textbf{Documenting AI-Assisted Code.} Any code that incorporates AI-generated content must be documented as follows:
+\begin{itemize}
+    \item Include an inline comment marking the beginning and end of any AI-assisted block, using the format:\\ \texttt{\% --- AI-assisted (tool: [name], purpose: [brief description]) ---}\\ and \texttt{\% --- End AI-assisted ---}
+    \item In your accompanying report or notebook, explain in your own words what the AI-assisted code does and why it is correct.
+    \item AI-generated code that you do not understand and cannot explain will be treated as unauthorized collaboration, regardless of whether it produces correct output.
+\end{itemize}
+
+\medskip
+\noindent\textbf{Consequences for Violations.} Violations of this policy will be handled in accordance with the university's academic integrity procedures and may include:
+\begin{itemize}
+    \item \textit{First offense (minor):} A zero on the affected assignment and a required meeting with the instructor to discuss proper AI usage practices.
+    \item \textit{First offense (major) or second offense:} A failing grade in the course and referral to the Office of Academic Integrity.
+    \item \textit{Failure to disclose:} Undisclosed AI usage, even for otherwise permitted purposes, will be treated as a violation. Transparent disclosure will always be viewed more favorably than concealment.
+\end{itemize}
+
+\noindent The distinction between minor and major offenses is at the discretion of the instructor, based on the scope of the violation and its impact on the learning objectives of the assignment. Students may appeal any determination through the university's standard academic integrity appeals process.@<param output:replace><prompt Expand this into a nuanced AI-usage policy for a graduate ML course. Address: when LLM use is acceptable vs. not, required disclosure format, how AI-assisted code should be documented, and consequences for violations. Balance encouraging responsible AI use with maintaining academic rigor.><hash 90df2ecb61f27f09>
+
+\subsection{Accessibility}
+
+The university Disability Resource Center provides accommodations
+for students with documented disabilities. <ph Standard accessibility statement with DRC contact information.><output To contact the Disability Resource Center or to request accommodations, students should visit their office located in the Student Services Building, Room 210, or call (555) 123-4567 during business hours.><hash c58d8383e033a5e7>
+
+\section{Final Project}
+
+The final project is the centerpiece of this course. Students work in teams
+of 2--3 to reproduce a recent ML paper and extend it with a novel experiment.
+
+@Project milestones:
+\begin{enumerate}
+\item Week 4: Team formation and paper selection (1-page proposal).
+\item Week 8: Progress report with initial reproduction results.
+\item Week 13--14: Final presentation (15 min + 5 min Q\&A).
+\item Week 15: Final report (8 pages, NeurIPS format).
+\end{enumerate}@<param context:learning_goals><plan Evaluate whether these milestones give students enough structured checkpoints. Suggest additional milestones or peer-review stages that would improve project quality and catch issues early.><output REVISION PLAN: PROJECT MILESTONES
+
+ANALYSIS: Current milestones provide only 4 checkpoints across 15 weeks, with a significant gap between Week 4 (proposal) and Week 8 (progress report). No peer-review component exists, which is essential for Goals 2 and 3.
+
+RECOMMENDED ADDITIONS:
+
+1. ADD Paper Comprehension Checkpoint (Week 6): 2-page technical summary of selected paper covering key claims, methodology, and reproduction strategy. Catches comprehension issues before implementation effort is wasted.
+
+2. ADD Peer-Review of Progress Reports (Week 9): Each team reviews another team's progress report using a rubric covering experimental design, baseline selection, and statistical methodology. Builds critical evaluation skills (Goal 2) and gives teams time to course-correct.
+
+3. ADD Ethics and Data Audit (Week 10): 1-page document covering dataset provenance, potential biases, and ethical considerations. Addresses Goal 4, which currently has no dedicated milestone.
+
+4. ADD Draft Report with Peer Feedback (Week 12): Minimum 5-page draft followed by peer review focused on clarity, ablation completeness, and statistical validity. Prevents last-minute writing and reinforces Goal 3.
+
+5. STRENGTHEN Week 8 Progress Report: Change to require at least one baseline comparison and a description of planned ablation experiments. Current wording is too vague.
+
+REVISED MILESTONE SEQUENCE:
+Week 4 -- Team formation and paper selection (1-page proposal)
+Week 6 -- Paper comprehension summary (2 pages)
+Week 8 -- Progress report with reproduction results, baseline comparison, and ablation plan
+Week 9 -- Peer review of progress reports
+Week 10 -- Ethics and data audit (1 page)
+Week 12 -- Draft final report (min 5 pages) with peer feedback
+Week 13-14 -- Final presentation (15 min + 5 min Q and A)
+Week 15 -- Final report (8 pages, NeurIPS format)><hash 7626bad06992d0f5>
+
+\end{document}

@@ -1,0 +1,102 @@
+---
+target: research_proposal.tex
+description: NSF-style research proposal on quantum error correction.
+sigil: "@"
+delimiter: "<>"
+---
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,cite}
+\bibliographystyle{ieeetr}
+
+\title{Scalable Quantum Error Correction for Near-Term Devices}
+\author{Dr. Alice Chen \\ Department of Physics, MIT}
+\date{}
+
+\begin{document}
+\maketitle
+
+%% ── Context blocks: reusable background for multiple annotations ──
+
+<context objectives>
+Primary objectives of this proposal:
+1. Design surface codes that reduce logical error rates by 10x on near-term hardware.
+2. Build open-source decoding software validated on IBM and Google quantum devices.
+3. Publish benchmark datasets for reproducible comparison of error-correction schemes.
+</context objectives>
+
+<context hardware>
+Target hardware platforms:
+- IBM Eagle (127 qubits, heavy-hex topology)
+- Google Sycamore (72 qubits, grid topology)
+- Quantinuum H2 (32 qubits, all-to-all connectivity)
+</context hardware>
+
+\section{Introduction}
+
+Quantum computing promises exponential speedups for problems in cryptography,
+materials science, and optimization. However, current noisy intermediate-scale
+quantum (NISQ) devices suffer from high physical error rates that limit circuit
+depth and practical utility. @Quantum error correction (QEC) provides a path
+forward by encoding logical qubits into redundant physical qubits, enabling
+fault-tolerant computation.@<param context:objectives><prompt Expand this paragraph into 2-3 paragraphs suitable for an NSF proposal introduction. Emphasize the gap between current NISQ capabilities and fault-tolerant requirements. Keep the technical level accessible to a broad physics audience.>
+
+Recent theoretical work has shown that the surface code threshold is
+approximately 1\% per gate operation <verify source:arxiv><cite source:arxiv style:bibtex>, making it
+one of the most promising candidates for near-term implementation.
+
+\section{Background}
+
+\subsection{Surface Codes}
+
+The surface code is a topological quantum error-correcting code defined on a
+two-dimensional lattice of physical qubits. <<Each data qubit interacts with
+neighboring syndrome qubits through CNOT gates, and measurement of the syndrome
+qubits reveals error information without disturbing the encoded logical state.>>
+The code distance $d$ determines the number of errors that can be corrected:
+up to $\lfloor(d-1)/2\rfloor$ errors. <verify>
+
+\subsection{Decoding Algorithms}
+
+Minimum-weight perfect matching (MWPM) is the standard decoder for surface
+codes, achieving near-optimal performance for independent noise models.
+Recent machine-learning decoders have demonstrated <ph a performance improvement metric>
+improvements over MWPM for correlated noise, though at higher classical
+computational cost <verify source:arxiv><cite source:gscholar style:bibtex>.
+
+\section{Research Plan}
+
+@Our research plan consists of three interrelated thrusts that build upon each
+other over the <<three-year>> funding period.@<param context:objectives;hardware><plan Suggest a detailed structure for this Research Plan section. It should have 3 thrusts aligned with the objectives. For each thrust, suggest subsection content covering: motivation, technical approach, milestones, and risk mitigation.>
+
+\subsection{Thrust 1: Code Design and Simulation}
+
+We will explore tailored surface code variants optimized for the heavy-hex
+topology of IBM Eagle processors. @Standard surface codes assume a square
+lattice, but the heavy-hex layout introduces degree-3 vertices that require
+modified stabilizer measurements.@<param context:hardware><prompt Explain the technical challenges of adapting surface codes to heavy-hex topology. Include specific stabilizer measurement modifications needed. 2-3 paragraphs.>
+
+\subsection{Thrust 2: Decoder Development}
+
+@We will develop a hybrid decoder that combines MWPM for simple error patterns
+with a neural-network module for correlated errors.@<param output:append><prompt Describe the decoder architecture in detail. Explain how the MWPM and neural-network components interact, training data generation, and expected performance bounds. Write 3-4 paragraphs.>
+
+\subsection{Thrust 3: Hardware Validation}
+
+Our validation campaign will execute benchmark circuits on <ph number of target platforms>
+quantum platforms over a <ph time period> period, collecting <ph type of data>
+for systematic comparison of our codes against existing implementations.
+
+\section{Broader Impacts}
+
+@This work will advance the field of quantum computing and contribute to
+workforce development in quantum information science.@<param output:replace><prompt Rewrite this into a compelling Broader Impacts section for an NSF proposal. Include: open-source software contributions, educational outreach, diversity initiatives, and potential societal benefits of fault-tolerant quantum computing. 3-4 paragraphs.>
+
+\section{Timeline and Budget Justification}
+
+@Year 1: Code design, simulation framework, and preliminary decoder prototypes.
+Year 2: Hardware experiments on IBM and Google systems, decoder optimization.
+Year 3: Open-source release, benchmarking, and community dissemination.@<param context:objectives;hardware><prompt Expand each year into quarterly milestones with specific deliverables. Format as a LaTeX description list.>
+
+\bibliography{refs}
+\end{document}

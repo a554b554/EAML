@@ -1,0 +1,117 @@
+---
+target: meeting_report.md
+description: Quarterly technical review report with AI-assisted analysis and fact-checking.
+sigil: "@"
+delimiter: "<>"
+---
+# Q3 2026 Technical Review — Project Aurora
+
+**Date:** September 15, 2026
+**Attendees:** Engineering leads, Product, VP of Engineering
+**Prepared by:** Technical Program Manager
+
+<context project_scope>
+Project Aurora is a real-time fraud detection platform processing credit card
+transactions. Key requirements:
+- Process 50,000 transactions per second at peak
+- Fraud detection latency under 100ms (p99)
+- False positive rate below 0.1%
+- Must comply with PCI DSS Level 1
+- Deployment on AWS (us-east-1 primary, eu-west-1 secondary)
+</context project_scope>
+
+<context q2_goals>
+Goals set in the Q2 review:
+1. Migrate from batch ML pipeline to real-time streaming (Kafka + Flink)
+2. Reduce false positive rate from 0.3% to under 0.15%
+3. Achieve SOC 2 Type II certification
+4. Hire 2 senior ML engineers
+</context q2_goals>
+
+## Executive Summary
+
+@Project Aurora made significant progress in Q3. The real-time streaming
+pipeline is operational in staging, the false positive rate dropped to 0.12%,
+and SOC 2 Type II audit is underway. However, we are behind on hiring and
+the production migration timeline has slipped by 3 weeks.@<param context:project_scope;q2_goals><prompt Rewrite this executive summary to be more structured and action-oriented. Use a format with: Key Wins (bullet points), Risks (bullet points), and a 1-sentence overall status assessment. Keep it concise — this is for VP-level readers.>
+
+## Progress Against Q2 Goals
+
+### Goal 1: Real-Time Streaming Migration
+
+@The team completed the Kafka + Flink streaming pipeline and deployed it to
+staging in week 8. Current throughput in staging is 35,000 transactions per
+second, below our 50,000 target.@<param context:project_scope output:append><prompt Analyze this status update. What questions should leadership ask? What are the likely bottlenecks for the throughput gap? Write 2 paragraphs: one summarizing status clearly, one with specific technical recommendations to close the 15k TPS gap.>
+
+Apache Flink can process over 1 million events per second per node with
+proper configuration and sufficient resources. <verify source:web>
+
+### Goal 2: False Positive Reduction
+
+The ML team retrained the fraud detection model using a gradient-boosted
+ensemble with 6 months of labeled transaction data. Key results:
+
+| Metric | Q2 Baseline | Q3 Current | Target |
+|--------|-------------|------------|--------|
+| False positive rate | 0.30% | 0.12% | \< 0.15% |
+| True positive rate | 94.2% | 96.1% | \> 95% |
+| P99 inference latency | 85ms | 42ms | \< 100ms |
+
+The model uses <<XGBoost with 500 trees, max depth 8, learning rate 0.05>> and
+features engineered from transaction velocity, merchant category, and
+geographic anomaly scores.
+
+@The improvement from 0.30% to 0.12% false positive rate represents a
+60% reduction, exceeding our target.@<verify> This will save approximately
+$2.4 million annually in manual review costs, assuming an average review
+cost of $3.50 per flagged transaction and 2 million daily transactions. <verify>
+
+### Goal 3: SOC 2 Type II Certification
+
+@The SOC 2 Type II audit began on August 1 and is expected to conclude by
+October 15. The auditors have completed the infrastructure review with no
+major findings. Two minor control gaps were identified:
+
+1. Incomplete access review logs for the ML training data bucket.
+2. Missing encryption-at-rest for the Flink checkpoint storage.
+
+Both gaps have remediation plans in progress.@<param context:project_scope><plan Evaluate these findings and suggest what the team should prioritize before the audit concludes. Consider whether there are other common SOC 2 control gaps in ML/streaming systems that the team should proactively check.>
+
+### Goal 4: Hiring
+
+We extended offers to 2 senior ML engineers. One accepted (start date October
+1). The second declined for a competing offer. @The remaining open position
+has been posted for 6 weeks with limited qualified applicants.@<prompt Write a brief recommendation paragraph for leadership on how to accelerate this hire. Consider: adjusting the job description, expanding the search to adjacent skill sets, engaging specialized recruiters, or considering senior-to-staff level conversion.>
+
+## Technical Deep Dive: Streaming Architecture
+
+@The streaming pipeline consists of:
+
+- **Kafka**: 12 partitions, 3 brokers, replication factor 3
+- **Flink**: 8 task managers, 4 slots each, event-time processing
+- **Feature Store**: Redis Cluster (6 nodes) for real-time feature lookup
+- **Model Server**: TensorRT-optimized XGBoost served via Triton
+
+The end-to-end latency from transaction ingestion to fraud decision is
+currently 67ms (p99) in staging.@<param context:project_scope output:append><prompt Review this architecture for production readiness. Identify potential single points of failure, capacity bottlenecks, and operational gaps. Structure your analysis as: Strengths, Concerns, and Recommendations. Consider disaster recovery given the multi-region requirement.>
+
+## Action Items
+
+@| Owner | Action | Due Date |
+|-------|--------|----------|
+| ML Lead | Profile Flink pipeline for TPS bottleneck | Sept 30 |
+| Platform | Encrypt Flink checkpoint storage | Sept 22 |
+| Hiring Manager | Engage ML recruiting firm | Sept 20 |
+| Security | Complete access review log backfill | Oct 1 |@<param context:q2_goals output:replace><prompt Review these action items for completeness. Are there missing action items based on the risks and issues discussed above? Add any missing items with suggested owners and due dates. Keep the same table format.>
+
+## Q4 Goals
+
+@Based on Q3 progress, the proposed Q4 goals are:
+
+1. Complete production migration of the streaming pipeline.
+2. Achieve 50,000 TPS throughput target.
+3. Obtain SOC 2 Type II certification.
+4. Fill remaining ML engineer position.
+5. Begin Phase 2: real-time model retraining pipeline.@<param context:project_scope;q2_goals><plan Assess whether these goals are realistic given current velocity and the 3-week slip. Suggest priority ordering, dependencies between goals, and any goals that should be deferred or added. Consider what success metrics should be defined for each goal.>
+
+
