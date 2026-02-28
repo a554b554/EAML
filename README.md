@@ -15,7 +15,7 @@ EAML lets you embed annotations directly inside your Markdown, LaTeX, or other t
                     └─────────────────────────────────────────────┘
                                         │
                               /execute file.eaml
-                              (in your AI agent chat window)
+                              (in your AI agent terminal)
                                         │
                                         ▼
                     ┌─────────────────────────────────────────────┐
@@ -90,7 +90,7 @@ The agent processes every annotation top-to-bottom and writes results back into 
 ---
 
 
-**Reading the exampple annotation:**
+**Explaining the example annotation:**
 
 | Part | Meaning |
 |---|---|
